@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Introduzione
-permalink:  /antirez/lezione1.html
+permalink:  /antirez/lezione01-introduzione.html
 ---
 
 ## 1. Il compilatore C e le flag

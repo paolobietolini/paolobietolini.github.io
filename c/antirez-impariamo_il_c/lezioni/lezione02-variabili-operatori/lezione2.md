@@ -1,3 +1,10 @@
+---
+layout: page
+title: Variabili e operatori
+permalink:  /antirez/lezione02-variabili-operatori.html
+---
+
+
 ## La libreria `stdio`
 
 La libreria **`stdio.h`** si occupa delle operazioni di **input/output**, come la stampa a schermo (`printf`) e la lettura da input (`scanf`, ecc.).

@@ -1,3 +1,8 @@
+---
+layout: page
+title: Variabili Globali
+permalink: /c/antirez/lezione03-variabili-globali/
+---
 # Lezione 3 - Variabili, Ambito, Passaggio per Valore e Tipi di Dato nel C
 
 **Video di riferimento:** [Lezione 3 - Variabili Globali](https://www.youtube.com/watch?v=mw4gUqsGPZw)
@@ -33,6 +38,7 @@ int main(void) {
 ```
 
 **Output:**
+
 ```bash
 2
 2
@@ -72,6 +78,7 @@ int main(void) {
 ```
 
 **Output:**
+
 ```bash
 1
 2
@@ -111,6 +118,7 @@ int main(void) {
 ```
 
 **Output:**
+
 ```bash
 1
 2
@@ -167,6 +175,7 @@ int main(void) {
 ```
 
 **Output:**
+
 ```bash
 10
 ```
@@ -257,6 +266,7 @@ int main(void) {
 ```
 
 **Output:**
+
 ```bash
 warning: format specifies type 'int' but the argument has type 'float'
 warning: format specifies type 'double' but the argument has type 'int'

@@ -1,5 +1,5 @@
 ---
-permalink: lezione1.html
+permalink: /lezione1
 ---
 
 ## 1. Il compilatore C e le flag

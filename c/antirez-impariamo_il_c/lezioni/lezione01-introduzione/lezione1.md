@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Introduzione
-permalink: /c/antirez-impariamo_il_c/lezioni/lezione01-introduzione//lezione1.html
+permalink:  /c/lezioni/lezione1.html
 ---
 
 ## 1. Il compilatore C e le flag

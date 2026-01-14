@@ -1,3 +1,7 @@
+---
+permalink: lezione1
+---
+
 ## 1. Il compilatore C e le flag
 
 Il compilatore `cc` può essere eseguito con diverse **flag** (opzioni) che ne modificano il comportamento.

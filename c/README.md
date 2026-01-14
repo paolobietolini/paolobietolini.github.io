@@ -1,26 +1,6 @@
 # Learning C
 
 This repository contains my notes, exercises, and code while learning C programming.
-
-## Structure
-
-```
-.
-├── antirez-impariamo_il_c/  # Impariamo il C - Salvatore Sanfilippo
-│   ├── antirez/             # Course lessons
-│   └── esercizi/            # My exercises for the course
-├── kr-exercises/            # K&R (The C Programming Language) exercises
-│   ├── chapter-01-tutorial-introduction/
-│   ├── chapter-02-types-operators-expressions/
-│   ├── chapter-03-control-flow/
-│   ├── chapter-04-functions-program-structure/
-│   ├── chapter-05-pointers-arrays/
-│   ├── chapter-06-structures/
-│   ├── chapter-07-input-output/
-│   └── chapter-08-unix-system-interface/
-└── README.md
-```
-
 ---
 
 ## Antirez Course - Impariamo il C
@@ -30,8 +10,8 @@ Course by Salvatore Sanfilippo (antirez).
 ### Fondamenti
 - [Lezione 1: Introduzione](antirez/lezione01-introduzione)
 - [Lezione 2: Variabili e operatori](antirez/lezione02-variabili-operatori)
-  - [Appendice: La vita delle variabili locali](antirez/lezione02-appendice-variabili-locali/)
-- [Lezione 3](antirez/lezione03/)
+  - [Appendice: La vita delle variabili locali](antirez/lezione02-appendice-variabili-locali)
+- [Lezione 3](antirez/lezione03-variabili-globali)
 - [Lezione 4](antirez/lezione04/)
 - [Lezione 5](antirez/lezione05/)
 

@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Appendice: La vita delle variabili locali
-permalink: /c/antirez/lezione02-appendice-variabili-locali/
+title: Appendice - La vita delle variabili locali
+permalink: /c/antirez/lezione02-appendice-variabili-locali
 ---
 # Lezione 2.5 - Le Variabili Locali e lo Stack
 

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Variabili Globali
-permalink: /c/antirez/lezione03-variabili-globali/
+permalink: /c/antirez/lezione03-variabili-globali
 ---
 # Lezione 3 - Variabili, Ambito, Passaggio per Valore e Tipi di Dato nel C
 

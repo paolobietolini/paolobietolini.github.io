@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Variabili e operatori
-permalink:  /antirez/lezione02-variabili-operatori.html
+permalink:  /c/antirez/lezione02-variabili-operatori.html
 ---
 
 

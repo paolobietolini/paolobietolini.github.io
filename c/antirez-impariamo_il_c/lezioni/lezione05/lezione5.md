@@ -1,3 +1,8 @@
+---
+layout: page
+title: Appendice - La vita delle variabili locali
+permalink: /c/antirez/lezione05-stringhe
+---
 # Lezione 5 - Stringhe in C
 
 **Video di riferimento:** [Lezione 5 - Stringhe](https://www.youtube.com/watch?v=SWWHqgSwQFw)

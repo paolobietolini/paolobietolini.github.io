@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Appendice - La vita delle variabili locali
-permalink: /lezione04-tipi
+permalink: /c/antirez/lezione04-tipi
 ---
 # Lezione 4 - I Tipi in C: Portabilità e Dimensioni
 

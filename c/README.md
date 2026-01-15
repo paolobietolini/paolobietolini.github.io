@@ -11,13 +11,13 @@ Course by Salvatore Sanfilippo (antirez).
 - [Lezione 1: Introduzione](antirez/lezione01-introduzione)
 - [Lezione 2: Variabili e operatori](antirez/lezione02-variabili-operatori)
   - [Appendice: La vita delle variabili locali](antirez/lezione02-appendice-variabili-locali)
-- [Lezione 3](antirez/lezione03-variabili-globali)
-- [Lezione 4](antirez/lezione04/)
-- [Lezione 5](antirez/lezione05/)
+- [Lezione 3: Variabili Globali](antirez/lezione03-variabili-globali)
+- [Lezione 4: Tipi](antirez/lezione04-tipi)
+- [Lezione 5: Stringhe](antirez/lezione05-stringhe)
 
 ### Controllo di Flusso e Ricorsione
-- [Lezione 6: IF, GOTO e ricorsione](antirez/lezione06-if-goto-ricorsione/)
-- [Lezione 7: Ancora sulla ricorsione, while/for, switch](antirez/lezione07-ricorsione-while-for-switch/)
+- [Lezione 6: IF, GOTO e ricorsione](antirez/lezione06-if-goto-ricorsione)
+- [Lezione 7: Ancora sulla ricorsione, while/for, switch](antirez/lezione07-ricorsione-while-for-switch)
 - [Lezione 8: Implementiamo il Conway's Game of Life](antirez/lezione08-game-of-life/)
 
 ### Puntatori

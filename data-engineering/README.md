@@ -14,9 +14,11 @@ Personal notes and resources for learning Data Engineering.
 - [Lesson 2: Advanced Queries (WIP)](sql/advanced/lesson-2)
 - [SQL Quick Reference](sql/reference)
 
-## Docker
+## Data Engineering Zoomcamp
 
-- [Docker Basics (WIP)](docker/basics)
+Notes from the [DataTalksClub Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp).
+
+- [Docker, Postgres & Terraform](data-engineering-zoomcamp/docker-postgres-terraform)
 
 ## GCP
 

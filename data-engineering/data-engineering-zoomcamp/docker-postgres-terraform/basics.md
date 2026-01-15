@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Docker Basics"
-permalink: /data-engineering/docker/basics
+permalink: /data-engineering/zoomcamp/docker-postgres-terraform
 ---
 
 # Docker Basics
@@ -188,7 +188,41 @@ Starting the container will output the same data but now we are using `uv`
     1    2           4     12
 ```
 
-An alternative of using this command `ENTRYPOINT ["uv","run","python", "pipeline.py"]`
-could be offered by adding `ENV PATH="/code/.venv/bin:$PATH"`
-So that we are adding `uv` to `PATH`
-(??? I do not understand how it works, approfondisci)
+### Alternative: Using PATH instead of `uv run`
+
+Instead of using `ENTRYPOINT ["uv","run","python", "pipeline.py"]`, we can add this line to the Dockerfile:
+
+```Dockerfile
+ENV PATH="/code/.venv/bin:$PATH"
+```
+
+And then simplify the entrypoint to:
+
+```Dockerfile
+ENTRYPOINT ["python", "pipeline.py"]
+```
+
+**How this works:**
+
+When `uv sync` runs, it creates a virtual environment at `/code/.venv/` with all the installed packages. Inside `.venv/bin/` there are executable scripts including `python`, `pip`, and any CLI tools from installed packages.
+
+The `PATH` environment variable is a list of directories (separated by `:`) where the shell looks for executables. When you type `python`, the shell searches each directory in `PATH` from left to right until it finds a matching executable.
+
+By prepending `/code/.venv/bin` to `PATH`:
+- The shell will find `/code/.venv/bin/python` **before** the system Python (`/usr/local/bin/python`)
+- This virtual environment Python already has all the dependencies installed by `uv sync`
+- So running `python pipeline.py` automatically uses the correct Python with all packages available
+
+**Why this is cleaner:**
+- No need to prefix every command with `uv run`
+- The container behaves like a normal Python environment
+- Any script or command that calls `python` will use the virtual environment automatically
+
+**Comparison:**
+
+| Approach | ENTRYPOINT | How it works |
+|----------|------------|--------------|
+| `uv run` | `["uv","run","python", "pipeline.py"]` | `uv` activates the venv for each command |
+| `PATH` | `["python", "pipeline.py"]` | Shell finds venv Python first via PATH |
+
+Both approaches achieve the same result - running Python with the correct dependencies. The `PATH` approach is more idiomatic for Docker containers since it makes the environment "just work" without requiring a wrapper command.

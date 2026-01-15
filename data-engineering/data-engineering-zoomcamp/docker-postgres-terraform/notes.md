@@ -108,3 +108,77 @@ After creating a project a `.toml` file will be created containing the project d
 
 `uv add pandas` will add the dependency to the project
 `uv run python pipeline.py 12` will run our project
+
+
+--- 
+### Dockerfile
+To Dockerize the pipeline we will use the `Dockerfile`, a file containing all the instructions to create a Docker image.
+
+```Dockerfile
+FROM python:latest
+
+RUN pip install pandas pyarrow
+
+WORKDIR /code
+COPY pipeline.py .
+```
+
+After finishing editing the Dockerfile we build the image by using
+`docker build -t test:panda .`
+and after the build is complete we run it using:
+`docker run -it --entrypoint=bash t--rm est:panda`
+
+using the `--rm` flag will flush all the changes to the container and our host filesystem will less likely have leftovers files.
+
+after running the container we are in the `/code` directory, as stated in the directive `WORKDIR /code`, in the Dockerfile
+
+
+Now we are executing the Python file by manually running it.
+WE can change this behaviour by adding 
+`ENTRYPOINT ["python", "pipeline.py"]` to the Dockerfile.
+So now when we run `docker run --rm test:pandas 12` we see the output from the Python file
+```bash
+> docker run --rm test:pandas 12
+  arguments ['pipeline.py', '12']
+  Running pipeline for month 12
+    day  passengers  month
+  0    1           3     12
+  1    2           4     12
+```
+
+We are still not usinv `uv` in our Docker container, so we can update the image, we can use the following comand in the Dockerfile
+`COPY --from=docker.io/astral/uv:latest /uv /bin/`,
+So we are copy another Docker image in our.
+[DockerHub documentation](https://hub.docker.com/r/astral/uv)
+
+The final Dockerfile will look like this
+```Dockerfile
+FROM python:latest
+COPY --from=docker.io/astral/uv:latest /uv /bin/
+
+WORKDIR /code
+# We are copying the following host files into the WORKDIR
+COPY pyproject.toml .python-version uv.lock ./
+
+# It is going to copy the depndencies in the lock file
+RUN uv sync --locked
+
+COPY pipeline.py .
+
+ENTRYPOINT ["uv","run","python", "pipeline.py"]
+```
+
+Starting the contatiner will output the same data but now we are using `uv`
+```bash
+> docker run --rm test:pandas 12
+    arguments ['pipeline.py', '12']
+    Running pipeline for month 12
+      day  passengers  month
+    0    1           3     12
+    1    2           4     12
+```
+
+An alternative of using this command `ENTRYPOINT ["uv","run","python", "pipeline.py"]`
+could be offered by adding `ENV PATH="/code/.venv/bin:$PATH"`
+So that we are adding `uv` to `PATH`
+(??? I do not understand how it works, approfondisci)

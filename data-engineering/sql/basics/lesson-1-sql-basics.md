@@ -1,3 +1,9 @@
+---
+layout: page
+title: "SQL Basics - Lesson 1"
+permalink: /data-engineering/sql/basics/lesson-1
+---
+
 # SQL Notes
 
 ## Learning Resource
@@ -171,4 +177,3 @@ SELECT name, color, SUM(price) AS total_price
 FROM clothes
 GROUP BY name, color;
 ```
-

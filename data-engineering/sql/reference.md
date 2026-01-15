@@ -1,4 +1,12 @@
-To learn
+---
+layout: page
+title: "SQL Quick Reference"
+permalink: /data-engineering/sql/reference
+---
+
+# SQL Quick Reference
+
+## To Learn
 - Window functions
 - CTEs
 - Query optimization basics
@@ -19,8 +27,8 @@ The `IN` operator is used to check if the value in a column belongs to a specifi
 ### Example
 
 ```sql
-SELECT * 
-FROM exercise_logs 
+SELECT *
+FROM exercise_logs
 WHERE type IN ('biking', 'hiking', 'tree climbing', 'rowing');
 ```
 
@@ -57,8 +65,8 @@ The subquery executes first, and its result is used by the outer query.
 ### Basic Example
 
 ```sql
-SELECT * 
-FROM exercise_logs 
+SELECT *
+FROM exercise_logs
 WHERE type IN (
     SELECT type FROM drs_favorites
 );
@@ -75,11 +83,11 @@ It effectively means: "Show exercises that are among the doctor's favorites."
 ## Subquery with Condition
 
 ```sql
-SELECT * 
-FROM exercise_logs 
+SELECT *
+FROM exercise_logs
 WHERE type IN (
-    SELECT type 
-    FROM drs_favorites 
+    SELECT type
+    FROM drs_favorites
     WHERE reason = 'Increases cardiovascular health'
 );
 ```
@@ -116,11 +124,11 @@ exercise_logs.type IN (drs_favorites.type)
 ## LIKE in Subqueries
 
 ```sql
-SELECT * 
-FROM exercise_logs 
+SELECT *
+FROM exercise_logs
 WHERE type IN (
-    SELECT type 
-    FROM drs_favorites 
+    SELECT type
+    FROM drs_favorites
     WHERE reason LIKE '%cardiovascular health%'
 );
 ```
@@ -148,11 +156,17 @@ Note: Without `%`, `LIKE` behaves like `=`.
 ## HAVING Operator
 
 Compared to `WHERE`, `HAVING` applies conditions to aggregated results after grouping (e.g., with GROUP BY), while `WHERE` filters rows from the original table before aggregation.
+
 ---
+
 ## AVG Operator
+
 Return the average of a number
---- 
+
+---
+
 ## COUNT Operator
+
 The COUNT() function returns the number of rows that matches a specified criterion.
 
 Find the total number of rows in the Products table:
@@ -162,7 +176,8 @@ SELECT COUNT(*)
 FROM Products;
 ```
 
-
 ---
 
 ## CASE
+
+*Notes incomplete.*

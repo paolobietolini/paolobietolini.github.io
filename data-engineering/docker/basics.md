@@ -1,15 +1,21 @@
+---
+layout: page
+title: "Docker Basics"
+permalink: /data-engineering/docker/basics
+---
+
+# Docker Basics
+
 ## Material
-https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/01-docker-terraform/docker-sql
-
-
-- Slides
-  https://docs.google.com/presentation/d/19pXcInDwBnlvKWCukP5sDoCAb69SPqgIoxJ_0Bikr00/edit?slide=id.p#slide=id.p
+- [GitHub: DataTalksClub Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/01-docker-terraform/docker-sql)
+- [Slides](https://docs.google.com/presentation/d/19pXcInDwBnlvKWCukP5sDoCAb69SPqgIoxJ_0Bikr00/edit?slide=id.p#slide=id.p)
 
 ## Notes
-Docker provides a isolated environment from the system where it runs on.
+
+Docker provides an isolated environment from the system where it runs on.
 
 Running `docker run hello-world` will confirm that Docker is installed.
-When running the `docker run` commadn, if the image doesn't exists locally, it will be pulled remotely
+When running the `docker run` command, if the image doesn't exist locally, it will be pulled remotely.
 
 Adding the flag `-it` to the command `run` will run the container in interactive mode. eg:
 `docker run -it ubuntu`
@@ -18,27 +24,28 @@ When running this OS, inside Docker, then, it will be isolated from my main OS.
 
 Everytime we run a Docker container we create a container from an image, and our changes inside of it will be lost. It doesn't preserve its state.
 
-Applyting `-slim` to the tag (i.e the string after the `:`) will download a smaller version of the image
-`docker run -it python 3:13.11-slim`
+Applying `-slim` to the tag (i.e the string after the `:`) will download a smaller version of the image:
+`docker run -it python:3.13.11-slim`
 
-To see `bash` instead of the REPL version of Python qe can override the entry point by running:
+To see `bash` instead of the REPL version of Python we can override the entry point by running:
 `docker run -it --entrypoint=bash python:latest`
 
 
-as said containers are stateless, so if I create a file, `echo leavemehere > fsociety.dat` it won't be maintained once I restart/re-run the container
+As said containers are stateless, so if I create a file, `echo leavemehere > fsociety.dat` it won't be maintained once I restart/re-run the container.
 
-by running `docker ps -a` we can see all the Exited containers and we can recover the state, so containers are not entirely stateless. When I created the `.dat` file inside the container, it was saved somewhere, as a snapshot of the container itself.
+By running `docker ps -a` we can see all the Exited containers and we can recover the state, so containers are not entirely stateless. When I created the `.dat` file inside the container, it was saved somewhere, as a snapshot of the container itself.
 
 
-By running `docker ps -aq` I can see the IDs of the exited containers, and by running 
+By running `docker ps -aq` I can see the IDs of the exited containers, and by running:
 ```bash
 docker rm `docker ps -aq`
 ```
 
-`docker ps -a` should show nothing after
+`docker ps -a` should show nothing after.
 
 
 ### Volumes
+
 Let's say we have three files on our machine:
 ```bash
 mkdir example
@@ -46,7 +53,7 @@ cd example
 touch file{1..3}.txt
 echo "Hello, World" > file1.txt
 ```
-and we want to list the files and their content using a previously created script`list_files.py`
+and we want to list the files and their content using a previously created script `list_files.py`
 ```python
 from pathlib import Path
 
@@ -80,15 +87,17 @@ On the right we have the path of the host machine and on the left the location i
 
 
 ## Data Pipelines
+
 A data pipeline is an automated system that collects raw data from various sources, transforms it (cleans, filters, aggregates) for consistency and usability, and then moves it to a destination like a data warehouse or lake for analysis, reporting, or machine learning
 
 For this Workshop we will use the [NYC Taxis data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
 
-The file `pipeline.py` will be our pipleine to ingest data and output it.
+The file `pipeline.py` will be our pipeline to ingest data and output it.
 
 ### Virtual Environment
-If there are missing depndencies we could use Virtual Environments to avoid installing the missing dependencies on our host machine
-A virtual environment, it is an isolated Python environment that keeps dependencies for the project separate from other projects and the host system
+
+If there are missing dependencies we could use Virtual Environments to avoid installing the missing dependencies on our host machine.
+A virtual environment is an isolated Python environment that keeps dependencies for the project separate from other projects and the host system.
 
 `uv` will manage the packages for us
 `pip install uv`
@@ -96,7 +105,7 @@ A virtual environment, it is an isolated Python environment that keeps dependenc
 To initialize a Python project:
 `uv init --python=3.13`
 
-To compare the Python versions, i.e the one in the virtual environment, and the one on the host 
+To compare the Python versions, i.e the one in the virtual environment, and the one on the host:
 ```bash
 uv run which python  # Python in the virtual environment
 uv run python -V
@@ -110,8 +119,9 @@ After creating a project a `.toml` file will be created containing the project d
 `uv run python pipeline.py 12` will run our project
 
 
---- 
+---
 ### Dockerfile
+
 To Dockerize the pipeline we will use the `Dockerfile`, a file containing all the instructions to create a Docker image.
 
 ```Dockerfile
@@ -126,7 +136,7 @@ COPY pipeline.py .
 After finishing editing the Dockerfile we build the image by using
 `docker build -t test:panda .`
 and after the build is complete we run it using:
-`docker run -it --entrypoint=bash t--rm est:panda`
+`docker run -it --entrypoint=bash --rm test:panda`
 
 using the `--rm` flag will flush all the changes to the container and our host filesystem will less likely have leftovers files.
 
@@ -134,7 +144,7 @@ after running the container we are in the `/code` directory, as stated in the di
 
 
 Now we are executing the Python file by manually running it.
-WE can change this behaviour by adding 
+We can change this behaviour by adding
 `ENTRYPOINT ["python", "pipeline.py"]` to the Dockerfile.
 So now when we run `docker run --rm test:pandas 12` we see the output from the Python file
 ```bash
@@ -146,7 +156,7 @@ So now when we run `docker run --rm test:pandas 12` we see the output from the P
   1    2           4     12
 ```
 
-We are still not usinv `uv` in our Docker container, so we can update the image, we can use the following comand in the Dockerfile
+We are still not using `uv` in our Docker container, so we can update the image, we can use the following command in the Dockerfile
 `COPY --from=docker.io/astral/uv:latest /uv /bin/`,
 So we are copy another Docker image in our.
 [DockerHub documentation](https://hub.docker.com/r/astral/uv)
@@ -160,7 +170,7 @@ WORKDIR /code
 # We are copying the following host files into the WORKDIR
 COPY pyproject.toml .python-version uv.lock ./
 
-# It is going to copy the depndencies in the lock file
+# It is going to copy the dependencies in the lock file
 RUN uv sync --locked
 
 COPY pipeline.py .
@@ -168,7 +178,7 @@ COPY pipeline.py .
 ENTRYPOINT ["uv","run","python", "pipeline.py"]
 ```
 
-Starting the contatiner will output the same data but now we are using `uv`
+Starting the container will output the same data but now we are using `uv`
 ```bash
 > docker run --rm test:pandas 12
     arguments ['pipeline.py', '12']

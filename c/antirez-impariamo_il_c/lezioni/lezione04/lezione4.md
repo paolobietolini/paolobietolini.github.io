@@ -1,3 +1,8 @@
+---
+layout: page
+title: Appendice - La vita delle variabili locali
+permalink: /lezione04-tipi
+---
 # Lezione 4 - I Tipi in C: Portabilità e Dimensioni
 
 **Video di riferimento:** [Lezione 4 - I tipi](https://www.youtube.com/watch?v=YNsXyasn4R4)

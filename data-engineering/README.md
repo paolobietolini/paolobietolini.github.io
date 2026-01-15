@@ -18,7 +18,7 @@ Personal notes and resources for learning Data Engineering.
 
 Notes from the [DataTalksClub Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp).
 
-- [Docker, Postgres & Terraform](data-engineering-zoomcamp/docker-postgres-terraform)
+- [Docker, Postgres & Terraform](zoomcamp/docker-postgres-terraform)
 
 ## GCP
 

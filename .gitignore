@@ -5,3 +5,6 @@
 __pycache__/
 *py[codz]
 *$py.class
+
+data-engineering/zoomcamp/docker-postgres-terraform/pipeline_ws/.ipynb_checkpoints
+data-engineering/zoomcamp/docker-postgres-terraform/pipeline_ws/ny_taxi_postgres_data

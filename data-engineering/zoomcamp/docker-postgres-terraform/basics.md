@@ -4,6 +4,10 @@ title: "Docker Basics"
 permalink: /data-engineering/zoomcamp/docker-postgres-terraform
 ---
 
+ToC
+[Docker Basics](#docker-basics)
+[Postgres with Docker](#postgres-with-docker)
+[Terraform with Docker](#terraform-with-docker)
 # Docker Basics
 
 ## Material
@@ -226,3 +230,110 @@ By prepending `/code/.venv/bin` to `PATH`:
 | `PATH` | `["python", "pipeline.py"]` | Shell finds venv Python first via PATH |
 
 Both approaches achieve the same result - running Python with the correct dependencies. The `PATH` approach is more idiomatic for Docker containers since it makes the environment "just work" without requiring a wrapper command.
+
+
+# Postgres with Docker
+We can run a containerized version of Postgres that doesn't require any installation steps. We only need to provide a few environment variables to it as well as a volume for storing data.
+
+
+```bash
+    $ mkdir ny_taxi_postgres_data
+    $ docker run -it --rm \
+      -e POSTGRES_USER="root" \
+      -e POSTGRES_PASSWORD="root" \
+      -e POSTGRES_DB="ny_taxi" \
+      -v ny_taxi_postgres_data:/var/lib/postgresql \
+      -p 9868:5432 \
+      postgres:18
+  ```
+- The flags using `-e` are Environmental Variables used to configure the application.
+So in this case we are creating a password and a user called `root`, and a database called `ny_taxi`.
+
+- `v` refers to a volume, that is the storage location of the container's file. Hence we can preserve our data for the next time the container is run.
+
+- Finally, the `p` flag refers to the ports mapped from the container to the host machine.
+
+Once the container is running, we can log into our database with [pgcli](https://www.pgcli.com/).
+
+```bash
+uv add --dev pgcli
+```
+
+The `--dev` flag marks this as a development dependency (not needed in production). It will be added to the [dependency-groups] section of pyproject.toml instead of the main dependencies section.
+In production we will use a different tool than `pgcli`.
+
+
+After installing `pgcli` we can connect to the Postgres db using the following command:
+`uv run pgcli -h localhost -p 9868 -u root -d ny_taxi`
+
+- uv run executes a command in the context of the virtual environment
+- -h is the host. Since we're running locally we can use localhost.
+- -p is the port.
+- -u is the username.
+- -d is the database name.
+- The password is not provided; it will be requested after running the command.
+- 
+### NY Taxi Dataset and Data Ingestion
+We will now create a Jupyter Notebook `notebook.ipynb` file which we will use to read a CSV file and export it to Postgres.
+
+To install Jupyter we use:
+```bash
+uv add --dev jupyter
+```
+
+and to create a Jupyter notebook the command is:
+```bash
+uv run jupyter notebook
+```
+This will open a browser window on `localhost:8888/tree`.
+
+We are going to use the [NYC TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
+Specifically, we will use the [Yellow taxi trip records CSV file for January 2021](https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz).
+
+The data dictionary of the set is available at:
+[NYC TLC Trip Record Data Dictionary](https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf)
+
+
+
+**Data Types**
+We encountered an error:
+```python
+/tmp/ipykernel_25483/2933316018.py:1: DtypeWarning: Columns (6) have mixed types. Specify dtype option on import or set low_memory=False.
+```
+
+An important difference between .csv and .parquet files is the absence of schemas in the former. Having a aschema make it easier for Pandas to infer the data types.
+
+To help Pandas knowing the correct types we need to set the following schema:
+```python
+dtype = {
+    "VendorID": "Int64",
+    "passenger_count": "Int64",
+    "trip_distance": "float64",
+    "RatecodeID": "Int64",
+    "store_and_fwd_flag": "string",
+    "PULocationID": "Int64",
+    "DOLocationID": "Int64",
+    "payment_type": "Int64",
+    "fare_amount": "float64",
+    "extra": "float64",
+    "mta_tax": "float64",
+    "tip_amount": "float64",
+    "tolls_amount": "float64",
+    "improvement_surcharge": "float64",
+    "total_amount": "float64",
+    "congestion_surcharge": "float64"
+}
+
+parse_dates = [
+    "tpep_pickup_datetime",
+    "tpep_dropoff_datetime"
+]
+
+df = pd.read_csv(
+    prefix + 'yellow_tripdata_2021-01.csv.gz',
+    nrows=100,
+    dtype=dtype,
+    parse_dates=parse_dates
+)
+```
+# Terraform with Docker

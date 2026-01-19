@@ -1,4 +1,5 @@
 import pandas as pd
+import click
 from sqlalchemy import create_engine
 from tqdm.auto import tqdm
 
@@ -10,10 +11,42 @@ from tqdm.auto import tqdm
 # table="yellow_taxi_data",
 # year=2021,
 # month=1
-chunk_size = 10_000
 
+chunk_size = 100_000
+
+@click.command()
+@click.option('--user', default='root', help='PostgreSQL user')
+@click.option('--password', default='root', help='PostgreSQL password')
+@click.option('--host', default='localhost', help='PostgreSQL host')
+@click.option('--port', default=9868, type=int, help='PostgreSQL port')
+@click.option('--db', default='ny_taxi', help='PostgreSQL database name')
+@click.option('--table', default='yellow_taxi_data', help='Target table name')
+@click.option('--year', type=int, default=2021, help='Year of the data to ingest')
+@click.option('--month', type=int, default=1, help='Month of the data to ingest (1-12)')
 
 def ingest_data(user, password, host, port, db, table, year, month):
+    """Ingests NYC Yellow Taxi data into a PostgreSQL database.
+
+    The function reads a compressed CSV file containing New York taxi ride data
+    for a given year and month, and loads it into a PostgreSQL table
+    using chunked inserts to reduce memory usage.
+
+    Args:
+    user (str): PostgreSQL username.
+    password (str): PostgreSQL password.
+    host (str): PostgreSQL database host.
+    port (int): PostgreSQL database port.
+    db (str): PostgreSQL database name.
+    table (str): Destination table name.
+    year (int): Year of data to import.
+    month (int): Month of data to import (1–12).
+
+    Raises:
+    FileNotFoundError: If the CSV file does not exist.
+    sqlalchemy.exc.SQLAlchemyError: In case of connection or database write errors.
+    """
+
+
     file_name = f"yellow_tripdata_{year}-{month:02d}.csv.gz"
     engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/{db}")
     dtype = {
@@ -46,12 +79,12 @@ def ingest_data(user, password, host, port, db, table, year, month):
     for df_chunk in tqdm(df_iter):
         if first:
             df_chunk.head(0).to_sql(
-                name=table, con=engine, if_exists="replace", index=False
+                name=f'{table}_{year}_{month:02d}', con=engine, if_exists="replace", index=False
             )
             first = False
             print("Table created")
         df_chunk.to_sql(
-            name=table,
+            name=f'{table}_{year}_{month:02d}',
             con=engine,
             if_exists="append",
             index=False,
@@ -62,13 +95,4 @@ def ingest_data(user, password, host, port, db, table, year, month):
 
 
 if __name__ == "__main__":
-    ingest_data(
-        user="root",
-        password="root",
-        host="localhost",
-        port="9868",
-        db="ny_taxi",
-        table="yellow_taxi_data",
-        year=2021,
-        month=1,
-    )
+    ingest_data()

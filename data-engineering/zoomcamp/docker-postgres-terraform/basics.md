@@ -4,10 +4,19 @@ title: "Docker Basics"
 permalink: /data-engineering/zoomcamp/docker-postgres-terraform
 ---
 
-ToC
-[Docker Basics](#docker-basics)
-[Postgres with Docker](#postgres-with-docker)
-[Terraform with Docker](#terraform-with-docker)
+## Table of Contents
+
+- [Docker Basics](#docker-basics)
+  - [Material](#material)
+  - [Notes](#notes)
+    - [Volumes](#volumes)
+  - [Data Pipelines](#data-pipelines)
+    - [Virtual Environment](#virtual-environment)
+    - [Dockerfile](#dockerfile)
+    - [Alternative: Using PATH instead of `uv run`](#alternative-using-path-instead-of-uv-run)
+- [Postgres with Docker](#postgres-with-docker)
+    - [NY Taxi Dataset and Data Ingestion](#ny-taxi-dataset-and-data-ingestion)
+- [Terraform with Docker](#terraform-with-docker)
 # Docker Basics
 
 ## Material
@@ -87,7 +96,7 @@ docker run -it \
 ```
 
 `-v ${pwd}/example:/app/example`
-On the right we have the path of the host machine and on the left the location inside the container
+On the left we have the path of the host machine and on the right the location inside the container
 
 
 ## Data Pipelines
@@ -138,9 +147,9 @@ COPY pipeline.py .
 ```
 
 After finishing editing the Dockerfile we build the image by using
-`docker build -t test:panda .`
+`docker build -t test:pandas .`
 and after the build is complete we run it using:
-`docker run -it --entrypoint=bash --rm test:panda`
+`docker run -it --entrypoint=bash --rm test:pandas`
 
 using the `--rm` flag will flush all the changes to the container and our host filesystem will less likely have leftovers files.
 
@@ -168,7 +177,7 @@ So we are copy another Docker image in our.
 The final Dockerfile will look like this
 ```Dockerfile
 FROM python:latest
-COPY --from=docker.io/astral/uv:latest /uv /bin/
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
 WORKDIR /code
 # We are copying the following host files into the WORKDIR
@@ -425,8 +434,8 @@ df_iter = pd.read_csv(
 We can use a for-loop (or the `next()` method) to iterate over the list.
 ```python
 first = True
-if first:
-  for df_chunk in df_iter:
+for df_chunk in df_iter:
+    if first:
     df_chunk.head(0).to_sql(
       name=DB_TABLE_NAME,
       con=engine,
@@ -434,7 +443,7 @@ if first:
     )
     first = False
     print(f'Table {DB_TABLE_NAME} created')
-  df_chunck.to_sql(
+  df_chunk.to_sql(
     name=DB_TABLE_NAME,
     con=engine,
     if_exists='append'
@@ -589,5 +598,19 @@ if __name__ == "__main__":
     )
 ```
 
-Prima pero' dobbiamo fare in modo che i parametri della funzione siano configurabili da CLI
+Prima pero' dobbiamo fare in modo che i parametri della funzione siano configurabili da CLI, so we are gonna use a library called `click`
+```python
+@click.command()
+@click.option('--user', default='root', help='PostgreSQL user')
+@click.option('--password', default='root', help='PostgreSQL password')
+@click.option('--host', default='localhost', help='PostgreSQL host')
+@click.option('--port', default=9868, type=int, help='PostgreSQL port')
+@click.option('--db', default='ny_taxi', help='PostgreSQL database name')
+@click.option('--table', default='yellow_taxi_data', help='Target table name')
+@click.option('--year', type=int, default=2021, help='Year of the data to ingest')
+@click.option('--month', type=int, default=1, help='Month of the data to ingest (1-12)')
+```
+
+Now we're ready to dockerize our function, just by changing our Dockerfile
 # Terraform with Docker
+(WIP)

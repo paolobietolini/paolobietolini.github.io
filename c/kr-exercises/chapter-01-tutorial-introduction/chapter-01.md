@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 1: A Tutorial Introduction"
-permalink: /c/kr-exercises/chapter-01-tutorial-introduction
 ---
 
 # Chapter 1: A Tutorial Introduction

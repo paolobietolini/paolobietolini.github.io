@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 6: Structures"
-permalink: /c/kr-exercises/chapter-06-structures
 ---
 
 # Chapter 6: Structures

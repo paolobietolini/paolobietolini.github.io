@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 5: Pointers and Arrays"
-permalink: /c/kr-exercises/chapter-05-pointers-arrays
 ---
 
 # Chapter 5: Pointers and Arrays

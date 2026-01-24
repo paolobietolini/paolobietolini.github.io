@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 3: Control Flow"
-permalink: /c/kr-exercises/chapter-03-control-flow
 ---
 
 # Chapter 3: Control Flow

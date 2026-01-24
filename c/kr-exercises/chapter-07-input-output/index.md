@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 7: Input and Output"
-permalink: /c/kr-exercises/chapter-07-input-output
 ---
 
 # Chapter 7: Input and Output

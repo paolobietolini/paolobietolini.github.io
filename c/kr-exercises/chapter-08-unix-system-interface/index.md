@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 8: The UNIX System Interface"
-permalink: /c/kr-exercises/chapter-08-unix-system-interface
 ---
 
 # Chapter 8: The UNIX System Interface

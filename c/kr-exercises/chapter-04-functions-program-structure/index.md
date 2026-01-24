@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 4: Functions and Program Structure"
-permalink: /c/kr-exercises/chapter-04-functions-program-structure
 ---
 
 # Chapter 4: Functions and Program Structure

@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "Chapter 2: Types, Operators and Expressions"
-permalink: /c/kr-exercises/chapter-02-types-operators-expressions
 ---
 
 # Chapter 2: Types, Operators and Expressions

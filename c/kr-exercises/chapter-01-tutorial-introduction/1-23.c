@@ -1,8 +1,8 @@
-/* Exercise 1-23. Write a program to remove all SLASHs from a C program. Don't
- * forget to handle quoted strings and character constants properly. C SLASHs
- * don't nest.
+/* Exercise 1-23. Write a program to remove all comments from a C program. Don't
+ * forget to handle quoted strings and character constants properly. C comments
+ * do not nest.
  */
-/*** See The Cleaned Version at 1-23_clean ***/
+/*** See The Cleaned Version at 1-23_clean.c ***/
 
 #include <stdio.h>
 

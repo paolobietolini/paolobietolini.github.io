@@ -1,14 +1,16 @@
 # Module 1 Homework: Docker & SQL
 ### Question 1. Understanding Docker images
 
-Run the command `docker run -it --entrypoint=bash python:3.13`
 What's the version of pip in the image?
 
-- [ ] 25.3
+- [x] 25.3
 - [ ] 24.3.1
 - [ ] 24.2.1
 - [ ] 23.3.1
-
+```bash 
+$ docker run -it --entrypoint=bash python:3.13 
+$ root@0bc0000a008:/# pip -V
+```
 ### Question 2. Understanding Docker networking and docker-compose
 - Given the following `docker-compose.yaml`, what is the hostname and port that pgadmin should use to connect to the postgres database?
 
@@ -35,7 +37,7 @@ For the trips in November 2025 (lpep_pickup_datetime between '2025-11-01' and '2
 ```sql
 SELECT
 count(*) as TRIPS
-FROM green_trips
+FROM "green_tripdata_2025-11"
 WHERE lpep_pickup_datetime >= '2025-11-01' 
   AND lpep_pickup_datetime < '2025-12-01'
   AND trip_distance <= 1
@@ -53,7 +55,7 @@ Use the pick up time for your calculations.
 
 ```sql
 SELECT date(lpep_pickup_datetime), trip_distance
-FROM green_trips
+FROM "green_tripdata_2025-11"
 WHERE trip_distance < 100.00
 ORDER BY trip_distance DESC
 LIMIT 1
@@ -69,14 +71,17 @@ Which was the pickup zone with the largest total_amount (sum of all trips) on No
 
 ```sql
 SELECT 
-    taxi_zones.Zone,
-    SUM(green_trips.total_amount) as total_amount
-FROM green_trips
-JOIN taxi_zones ON green_trips.PULocationID = taxi_zones.LocationID
-WHERE DATE(green_trips.lpep_pickup_datetime) = '2025-11-18'
-GROUP BY taxi_zones.Zone
+    taxi_zones."Zone",
+    SUM(green_trips."total_amount") AS total_amount
+FROM "green_tripdata_2025-11" AS green_trips
+JOIN taxi_zone_lookup AS taxi_zones
+    ON green_trips."PULocationID" = taxi_zones."LocationID"
+WHERE green_trips."lpep_pickup_datetime" >= '2025-11-18'
+  AND green_trips."lpep_pickup_datetime" <  '2025-11-19'
+GROUP BY taxi_zones."Zone"
 ORDER BY total_amount DESC
-LIMIT 1
+LIMIT 1;
+
 ```
 
 ### Question 6. Largest tip
@@ -91,12 +96,12 @@ Note: it's tip , not trip. We need the name of the zone, not the ID.
 
 ```sql
 SELECT 
-    dropoff_zones.Zone as dropoff_zone,
+    dropoff_zones."Zone" as dropoff_zone,
     green_trips.tip_amount
-FROM green_trips
-JOIN taxi_zones AS pickup_zones ON green_trips.PULocationID = pickup_zones.LocationID
-JOIN taxi_zones AS dropoff_zones ON green_trips.DOLocationID = dropoff_zones.LocationID
-WHERE pickup_zones.Zone = 'East Harlem North' 
+FROM public."green_tripdata_2025-11" as green_trips
+JOIN public.taxi_zone_lookup AS pickup_zones ON green_trips."PULocationID" = pickup_zones."LocationID"
+JOIN public.taxi_zone_lookup AS dropoff_zones ON green_trips."DOLocationID" = dropoff_zones."LocationID"
+WHERE pickup_zones."Zone" = 'East Harlem North' 
     AND green_trips.lpep_pickup_datetime >= '2025-11-01'
     AND green_trips.lpep_pickup_datetime < '2025-12-01'
 ORDER BY green_trips.tip_amount DESC

@@ -2,7 +2,7 @@
 services:
   taxi_ingest:
     build: .
-    command: python data_ingestion.py --user root --password root --host pgdatabase --port 5432 --db ny_taxi
+    command: ["--user", "root", "--password", "root", "--host", "pgdatabase", "--port", "5432", "--db", "ny_taxi"]
     networks:
       - pg-network
     depends_on:
@@ -10,7 +10,7 @@ services:
         condition: service_healthy
 
   pgdatabase:
-    image: postgres:18
+    image: postgres:17
     environment:
       POSTGRES_USER: "root"
       POSTGRES_PASSWORD: "root"

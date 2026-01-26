@@ -47,9 +47,9 @@ def ingest_data(user, password, host, port, db):
 
     csv_dtype = {
         "LocationID": "Int64",
-        "Borough": "String",
-        "Zone": "String",
-        "service_zone": "String",
+        "Borough": "string",
+        "Zone": "string",
+        "service_zone": "string",
     }
 
     csv_iter = pd.read_csv(

@@ -312,7 +312,7 @@ We encountered an error:
 
 An important difference between .csv and .parquet files is the absence of schemas in the former. 
 
-Having a aschema make it easier for Pandas to infer the data types.
+Having a schema make it easier for Pandas to infer the data types.
 
 To help Pandas knowing the correct types we need to set the following schema:
 ```python

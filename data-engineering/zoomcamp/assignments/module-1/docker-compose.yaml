@@ -1,0 +1,51 @@
+
+services:
+  taxi_ingest:
+    build: .
+    command: python data_ingestion.py --user root --password root --host pgdatabase --port 5432 --db ny_taxi
+    networks:
+      - pg-network
+    depends_on:
+      pgdatabase:
+        condition: service_healthy
+
+  pgdatabase:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_DB: "ny_taxi"
+    volumes:
+      - "ny_taxi_postgres_data:/var/lib/postgresql/data"
+    ports:
+      - "9868:5432"
+    networks:
+      - pg-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "root"
+    volumes:
+      - "pgadmin_data:/var/lib/pgadmin"
+    ports:
+      - "8085:80"
+    networks:
+      - pg-network
+    depends_on:
+      - pgdatabase
+
+volumes:
+  ny_taxi_postgres_data:
+  pgadmin_data:
+
+
+networks:
+  pg-network:
+    driver: bridge

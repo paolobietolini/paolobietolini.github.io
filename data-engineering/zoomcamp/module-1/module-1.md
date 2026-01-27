@@ -16,7 +16,14 @@ permalink: /data-engineering/zoomcamp/docker-postgres-terraform
     - [Alternative: Using PATH instead of `uv run`](#alternative-using-path-instead-of-uv-run)
 - [Postgres with Docker](#postgres-with-docker)
     - [NY Taxi Dataset and Data Ingestion](#ny-taxi-dataset-and-data-ingestion)
-- [Terraform with Docker](#terraform-with-docker)
+- [Terraform](#terraform)
+  - [What is Terraform?](#what-is-terraform)
+  - [Setting Up GCP for Terraform](#setting-up-gcp-for-terraform)
+  - [Terraform Configuration Files](#terraform-configuration-files)
+  - [Terraform Commands](#terraform-commands)
+  - [State Management](#state-management)
+  - [File Structure](#file-structure)
+  - [Best Practices](#best-practices)
 # Docker Basics
 
 ## Material
@@ -752,5 +759,188 @@ docker run -it --rm\
 ```
 
 
-# Terraform with Docker
-(WIP)
+# Terraform
+
+## What is Terraform?
+
+Terraform is an Infrastructure as Code (IaC) tool that allows you to define and provision cloud infrastructure using declarative configuration files. Instead of manually creating resources through a cloud provider's UI, you describe what you want in `.tf` files and Terraform creates it for you.
+
+**Key benefits:**
+- **Reproducibility**: Infrastructure can be versioned and recreated identically
+- **Automation**: No manual clicking through cloud consoles
+- **Documentation**: The code itself documents your infrastructure
+- **State management**: Terraform tracks what resources exist and their current state
+
+## Setting Up GCP for Terraform
+
+Before using Terraform with Google Cloud Platform, you need to:
+
+1. **Create a GCP Project** in the [Google Cloud Console](https://console.cloud.google.com/)
+
+2. **Create a Service Account** with the necessary permissions:
+   - Go to IAM & Admin → Service Accounts
+   - Create a new service account
+   - Grant roles: `Storage Admin`, `BigQuery Admin` (or more restrictive roles as needed)
+   - Create and download a JSON key file
+
+3. **Store the credentials** securely (e.g., in a `secrets/` folder that's gitignored)
+
+## Terraform Configuration Files
+
+### main.tf
+
+The main configuration file defines the provider and resources:
+
+```hcl
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "7.16.0"
+    }
+  }
+}
+
+provider "google" {
+  credentials = file(var.credentials)
+  project     = var.project
+  region      = var.region
+}
+
+resource "google_storage_bucket" "auto-expire" {
+  name          = var.gcs_bucket_name
+  location      = var.bq_location
+  force_destroy = true
+
+  lifecycle_rule {
+    condition {
+      age = 3
+    }
+    action {
+      type = "Delete"
+    }
+  }
+
+  lifecycle_rule {
+    condition {
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+  }
+}
+
+resource "google_bigquery_dataset" "demo-dataset" {
+  dataset_id = var.bq_dataset_name
+  location   = var.bq_location
+}
+```
+
+**Key elements:**
+- `terraform` block: Specifies required providers and versions
+- `provider` block: Configures authentication and project settings
+- `resource` blocks: Define the actual infrastructure to create
+  - `google_storage_bucket`: Creates a GCS bucket with lifecycle rules (auto-delete after 3 days)
+  - `google_bigquery_dataset`: Creates a BigQuery dataset
+
+### variables.tf
+
+Variables make the configuration reusable and configurable:
+
+```hcl
+variable "credentials" {
+  default     = "./secrets/de-terraform-test-keys.json"
+  description = "GCP SA credentials"
+}
+
+variable "project" {
+  default     = "de-terraform-test"
+  description = "GCP Project ID"
+}
+
+variable "region" {
+  description = "Project Location"
+  default     = "europe-central2"
+}
+
+variable "bq_dataset_name" {
+  default     = "demo_dataset"
+  description = "BQ Dataset Name"
+}
+
+variable "bq_location" {
+  default     = "EU"
+  description = "BQ Location"
+}
+
+variable "gcs_bucket_name" {
+  default     = "de-terraform-test-tf-bucket"
+  description = "GCS Bucket Name"
+}
+```
+
+Variables can be overridden via:
+- Command line: `terraform apply -var="project=my-project"`
+- Environment variables: `export TF_VAR_project=my-project`
+- A `terraform.tfvars` file
+
+## Terraform Commands
+
+### Initialize
+```bash
+terraform init
+```
+Downloads the required providers and initializes the working directory. Creates a `.terraform/` folder with provider binaries.
+
+### Plan
+```bash
+terraform plan
+```
+Shows what changes Terraform will make without actually applying them. Always review the plan before applying.
+
+### Apply
+```bash
+terraform apply
+```
+Creates/updates the infrastructure. Terraform will show the plan and ask for confirmation before proceeding.
+
+### Destroy
+```bash
+terraform destroy
+```
+Removes all resources managed by Terraform. Use with caution!
+
+## State Management
+
+Terraform maintains a **state file** (`terraform.tfstate`) that tracks:
+- What resources exist
+- Their current configuration
+- Metadata and dependencies
+
+**Important:**
+- Never edit the state file manually
+- The state file may contain sensitive data (consider remote state storage for production)
+- A `.terraform.lock.hcl` file locks provider versions for reproducibility
+
+## File Structure
+
+```
+terraform/
+├── main.tf              # Main configuration
+├── variables.tf         # Variable definitions
+├── secrets/             # Credentials (gitignored!)
+│   └── *.json
+├── .terraform/          # Provider binaries (gitignored)
+├── .terraform.lock.hcl  # Provider version lock
+├── terraform.tfstate    # Current state
+└── terraform.tfstate.backup  # Previous state
+```
+
+## Best Practices
+
+1. **Never commit credentials** - Add `secrets/` and `*.json` keys to `.gitignore`
+2. **Use variables** - Avoid hardcoding values in `main.tf`
+3. **Review plans** - Always run `terraform plan` before `apply`
+4. **Use version constraints** - Pin provider versions to avoid breaking changes
+5. **Remote state** - For team projects, store state in a remote backend (GCS, S3, etc.)

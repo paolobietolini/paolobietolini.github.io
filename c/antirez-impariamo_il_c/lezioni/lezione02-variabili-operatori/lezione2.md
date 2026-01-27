@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: Variabili e operatori
 permalink:  /c/antirez/lezione02-variabili-operatori.html
 ---

@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "GCP Data Engineer Certification Guide"
 permalink: /data-engineering/gcp/certification
 ---

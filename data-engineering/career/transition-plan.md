@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "Data Engineering Career Transition Plan"
 permalink: /data-engineering/career/transition-plan
 ---

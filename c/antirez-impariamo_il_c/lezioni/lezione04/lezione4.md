@@ -1,6 +1,6 @@
 ---
-layout: page
-title: Appendice - La vita delle variabili locali
+layout: default
+title: I Tipi in C
 permalink: /c/antirez/lezione04-tipi
 ---
 # Lezione 4 - I Tipi in C: Portabilità e Dimensioni

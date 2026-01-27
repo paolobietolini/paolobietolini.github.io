@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: Variabili Globali
 permalink: /c/antirez/lezione03-variabili-globali
 ---

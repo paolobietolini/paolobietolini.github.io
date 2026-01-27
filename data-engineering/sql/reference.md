@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "SQL Quick Reference"
 permalink: /data-engineering/sql/reference
 ---

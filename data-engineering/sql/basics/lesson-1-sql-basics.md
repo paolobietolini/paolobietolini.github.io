@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "SQL Basics - Lesson 1"
 permalink: /data-engineering/sql/basics/lesson-1
 ---

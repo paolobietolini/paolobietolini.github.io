@@ -1,6 +1,6 @@
 ---
-layout: page
-title: "Docker Basics"
+layout: default
+title: "Docker, Postgres & Terraform"
 permalink: /data-engineering/zoomcamp/docker-postgres-terraform
 ---
 

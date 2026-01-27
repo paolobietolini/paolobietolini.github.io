@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: Data Engineering Notes
 permalink: /data-engineering/
 ---

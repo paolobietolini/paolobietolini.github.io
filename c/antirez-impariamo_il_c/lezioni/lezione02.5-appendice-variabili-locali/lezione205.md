@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: Appendice - La vita delle variabili locali
 permalink: /c/antirez/lezione02-appendice-variabili-locali
 ---

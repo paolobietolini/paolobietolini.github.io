@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: Introduzione
 permalink:  /c/antirez/lezione01-introduzione.html
 ---

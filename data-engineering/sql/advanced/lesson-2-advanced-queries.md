@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "Advanced SQL Queries - Lesson 2 (WIP)"
 permalink: /data-engineering/sql/advanced/lesson-2
 ---

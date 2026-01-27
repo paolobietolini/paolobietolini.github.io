@@ -1,6 +1,6 @@
 ---
-layout: page
-title: Appendice - La vita delle variabili locali
+layout: default
+title: Stringhe in C
 permalink: /c/antirez/lezione05-stringhe
 ---
 # Lezione 5 - Stringhe in C

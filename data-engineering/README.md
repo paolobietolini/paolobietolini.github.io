@@ -18,7 +18,8 @@ Personal notes and resources for learning Data Engineering.
 
 Notes from the [DataTalksClub Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp).
 
-- [Docker, Postgres & Terraform](zoomcamp/docker-postgres-terraform)
+- [Docker, Postgres & Terraform](zoomcamp/module-1/docker-postgres-terraform)
+- [Workflow Orchestration with Kestra](zoomcamp/workflow-orchestration-kestra)
 
 ## GCP
 

@@ -7,16 +7,14 @@ typedef struct Contact
 {
     char name[50];
     char phone[20];
-    struct Contact *next;
+    struct Contact* next;
 } contact;
 
-
 // add()
-void add(contact **head, char *name, char *phone)
+void add(contact** head, char* name, char* phone)
 {
-    contact *new = (contact *)malloc(sizeof(contact));
-    if (new == NULL)
-    {
+    contact* new = (contact*)malloc(sizeof(contact));
+    if (new == NULL) {
         fprintf(stderr, "Error while allocating memory\n");
         return;
     }
@@ -33,7 +31,7 @@ void add(contact **head, char *name, char *phone)
         return;
     }
 
-    contact *temp = *head;
+    contact* temp = *head;
     while (temp->next != NULL)
     {
         temp = temp->next;
@@ -44,9 +42,9 @@ void add(contact **head, char *name, char *phone)
     return;
 }
 
-void add_head(contact **head, char *name, char *phone)
+void add_head(contact** head, char* name, char* phone)
 {
-    contact *new = (contact *)malloc(sizeof(contact));
+    contact* new = (contact*)malloc(sizeof(contact));
     if (new == NULL)
     {
         fprintf(stderr, "Error while allocating memory\n");
@@ -70,7 +68,7 @@ void add_head(contact **head, char *name, char *phone)
     return;
 }
 // print_phonebook()
-void print_phonebook(contact *head)
+void print_phonebook(contact* head)
 {
     while (head != NULL)
     {
@@ -80,14 +78,18 @@ void print_phonebook(contact *head)
 }
 
 // find()
-contact *find(contact *head, char *name) {
-    if(head == NULL) {
+contact* find(contact* head, char* name)
+{
+    if (head == NULL)
+    {
         fprintf(stderr, "Contact %s, not found. Empty list.\n", name);
         return NULL;
     }
 
-    while(head != NULL) {
-        if(strcmp(head->name, name) == 0) {
+    while (head != NULL)
+    {
+        if (strcmp(head->name, name) == 0)
+        {
             return head;
         }
         head = head->next;
@@ -98,20 +100,33 @@ contact *find(contact *head, char *name) {
 }
 
 // delete()
-void delete(contact **head, char *name) {
-    while (*head != NULL) {
-        if (strcmp((*head)->name, name) == 0) {
-            contact *to_free = *head;
-            *head = (*head)->next;
-            free(to_free);
-            return;
-        }
+// void delete(contact **head, char *name) {
+//     while (*head != NULL) {
+//         if (strcmp((*head)->name, name) == 0) {
+//             contact *to_free = *head;
+//             *head = (*head)->next;
+//             free(to_free);
+//             return;
+//         }
+//         head = &(*head)->next;
+//     }
+// }
+
+void delete(contact** head, char* name) {
+    // Find the pointer that points to our target
+    while (*head != NULL && strcmp((*head)->name, name) != 0)
         head = &(*head)->next;
-    }
+
+    if (*head == NULL)
+        return;
+
+    contact* to_free = *head;
+    *head = (*head)->next;
+    free(to_free);
 }
-int main(void)
-{
-    contact *phonebook = NULL;
+
+int main(void) {
+    contact* phonebook = NULL;
     find(phonebook, "Bowser");
 
     add(&phonebook, "Mario", "111");
@@ -120,7 +135,7 @@ int main(void)
     print_phonebook(phonebook);
 
     // Bonus: puoi avere più liste!
-    contact *altra_rubrica = NULL;
+    contact* altra_rubrica = NULL;
     add(&altra_rubrica, "Peach", "333");
 
     delete(&phonebook, "Bowser");

@@ -158,13 +158,13 @@ int main(void) {
     contact* altra_rubrica = NULL;
     add(&altra_rubrica, "Peach", "333");
 
-    //delete(&phonebook, "Bowser");
+    delete(&phonebook, "Bowser");
     insert_at(&phonebook, "Donkey Kong", "5555", 0);
-    print_phonebook(phonebook);
-    printf("%s \n", find_middle(phonebook)->name);
     // printf("Rubrica 2:\n");
     // print_phonebook(altra_rubrica);
-    // find(phonebook, "Toad");
+    add(&phonebook, "Toad", "88554");
+    find(phonebook, "Toad");
+    print_phonebook(phonebook);
 
     return 0;
 }

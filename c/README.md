@@ -71,6 +71,25 @@ Exercises from "The C Programming Language" by Kernighan and Ritchie.
 
 ---
 
+## Exercises
+
+Practice exercises and notes on pointers, linked lists, and more.
+
+- [All Exercises](exercises/)
+
+### Notes
+- [Puntatori in C: Guida Completa](exercises/notes/puntatori)
+- [Doppi Puntatori](exercises/notes/doppi_puntatori)
+- [Linked Lists: Educational Resources](exercises/notes/linked_lists)
+
+### Source Code
+- [circular_list.c](exercises/src/circular_list.c) - Circular linked list
+- [libri.c](exercises/src/libri.c) - Book management with structs
+- [remove_emoji.c](exercises/src/remove_emoji.c) - Remove emoji from strings
+- [rubrica.c](exercises/src/rubrica.c) - Phone book with doubly linked list
+
+---
+
 ## Compilation
 
 ```bash

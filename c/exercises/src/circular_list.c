@@ -1,15 +1,3 @@
-// Una lista circolare singola
-// ha il primo e ultimo nodo collegati,
-// come?quando creo il primo nodo lo colego a se stesso
-//  A-> A
-
-//  quando creo il secondo nodo
-//  il next del nuovo e la vecchia testa
-//  il next della vecchia testa e` nuovo
-//  nuovo diventa testa
-
-// A -> B -> C -> D -> E -> A
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -46,8 +34,6 @@ void add(book** tail, char* title) {
   (*tail)->next = new_book;         // (1984->) Dune -> 1984
   *tail = new_book;
 }
-
-
 book* find(book* tail, char* key) {
   if (NULL == tail)
     return NULL;
@@ -65,10 +51,6 @@ book* find(book* tail, char* key) {
 }
 
 void delete(book** tail, char* key) {
-  if (*tail == NULL)
-    return;
-
-  // caso: un solo nodo
   if ((*tail)->next == *tail) {
     if (strcmp((*tail)->title, key) == 0) {
       free(*tail);
@@ -82,17 +64,21 @@ void delete(book** tail, char* key) {
   do {
     if (strcmp(current->title, key) == 0) {
       prev->next = current->next;
-      if (current == *tail)  // cancello la coda
+      if (current == *tail)
         *tail = prev;
       free(current);
       return;
     }
+
     prev = current;
     current = current->next;
   } while (current != (*tail)->next);
 }
 
+
 void print(book* tail) {
+  if (tail == NULL)
+    return;
   book* current = tail->next;
   if (NULL == current)
     return;
@@ -114,5 +100,3 @@ int main(void) {
   delete(&library, "Fight Club");
   print(library);
 }
-
-// Dune > 1984 > LOTR > FC > Dune

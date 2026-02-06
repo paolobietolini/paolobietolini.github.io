@@ -3,6 +3,13 @@
 /.vscode/
 *secrets/
 *.json
+
+# C compiled binaries
+c/**/src/circular
+c/**/src/libri
+c/**/src/remove_emoji
+c/**/src/rubrica
+c/kr-exercises/**/syntax_checker
 *.pem
 
 # Data files

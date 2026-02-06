@@ -35,6 +35,7 @@ Exercises from "The C Programming Language" (2nd Edition) by Brian W. Kernighan 
 | 1-22 | Fold long lines at word boundaries | [1-22.c](1-22.c) |
 | 1-23 | Remove C comments from an input | [1-23.c](1-23.c) |
 | 1-23 | Cleaned version of 1-23.c | [1-23_clean.c](1-23_clean.c) |
+| 1-24 | Check C program for syntax errors (unbalanced brackets, quotes, comments) | [1-24.c](1-24.c) |
 
 
 ## Additional Practice

@@ -1,0 +1,25 @@
+# Green and Yellow trip data have been omitted for the sake of clarity
+models:
+  - name: stg_fhv_tripdata
+    description: >
+      Staging model for for-hire vehicle trip data. Standardizes column names
+      and data types from the raw fhv_tripdata source.
+    columns:
+      - name: dispatching_base_num
+        description: TLC base license number of the dispatching base
+        data_tests:
+          - not_null
+      - name: pickup_location_id
+        description: TLC Taxi Zone where pickup occurred
+      - name: dropoff_location_id
+        description: TLC Taxi Zone where dropoff occurred
+      - name: pickup_datetime
+        description: Date and time of trip pickup
+        data_tests:
+          - not_null
+      - name: dropoff_datetime
+        description: Date and time of trip dropoff
+      - name: sr_flag
+        description: Shared ride flag
+      - name: affiliated_base_number
+        description: TLC base license number of the affiliated base

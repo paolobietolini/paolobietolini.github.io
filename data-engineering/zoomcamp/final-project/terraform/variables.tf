@@ -29,24 +29,9 @@ variable "bq_datasets" {
     location = string
   }))
   default = {
-    raw_backend = { location = "EU" }
-    raw_ga4     = { location = "US" }
+    raw_backend   = { location = "EU" }
+    raw_ga4       = { location = "US" }
+    raw_ecommerce = { location = "EU" }
   }
-}
-
-# Google Cloud Storage
-variable "gcs_location" {
-  default = "EU"
-  description = "GCS Location"     
-}
-
-variable "gcs_bucket_name" {
-  default     = "raw_backend_data"
-  description = "GCS Bucket Name"
-}
-
-variable "gcs_storage_class" {
-  default     = "STANDARD"
-  description = "GCS Storage Class"
 }
 

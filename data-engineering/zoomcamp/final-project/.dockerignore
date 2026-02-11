@@ -1,0 +1,10 @@
+.git
+__pycache__
+*.pyc
+.venv
+terraform/.terraform
+terraform/*.tfstate*
+secrets
+dags
+dbt
+

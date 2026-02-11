@@ -4,12 +4,14 @@ from pathlib import Path
 from faker import Faker
 from datetime import datetime, timedelta
 import random
+import os
 
 PROJECT_ID = "zmcp-final"
 DATASET_ID = "raw_ga4"
 TABLE_ID = "events"
-CREDENTIALS_FILE = "../secrets/secret_zcmp-final.json"
-BACKEND_DIR = "data/raw_backend"
+CREDENTIALS_FILE = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
+# CREDENTIALS_FILE = "secrets/secret_zcmp-final.json"
+BACKEND_DIR = "scripts/data/raw_backend"
 
 random.seed(42)
 Faker.seed(42)
@@ -43,7 +45,7 @@ QUERY_ITEMS = f"""
 def query_bq(query):
     try:
         print("Querying BigQuery...")
-        bq_client = bigquery.Client.from_service_account_json(CREDENTIALS_FILE)
+        bq_client = bigquery.Client()
         query_job = bq_client.query(query)
         df = pl.from_pandas(query_job.to_dataframe())
         print("BigQuery, done.")
@@ -174,7 +176,7 @@ def main():
     print(f"Orders: {len(orders)} rows (with ~17% dropped)")
     print(f"Order items: {len(order_items)} rows")
     print(f"Saved to {BACKEND_DIR}/")
-    
+
     print(pl.read_parquet(f"{BACKEND_DIR}/orders.parquet"))
 
 

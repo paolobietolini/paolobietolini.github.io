@@ -9,5 +9,8 @@ dependencies = [
     "faker>=40.4.0",
     "google-api-core>=2.29.0",
     "google-cloud-bigquery>=3.40.0",
+    "pandas>=3.0.0",
     "polars>=1.38.1",
+    "psycopg2-binary>=2.9.11",
+    "sqlalchemy>=2.0.46",
 ]

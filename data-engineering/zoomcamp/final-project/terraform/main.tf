@@ -14,12 +14,6 @@ provider "google" {
   zone        = var.zone
 }
 
-resource "google_storage_bucket" "auto-expire" {
-  name          = var.gcs_bucket_name
-  location      = var.gcs_location
-  force_destroy = true
-}
-
 resource "google_bigquery_dataset" "datasets" {
   for_each   = var.bq_datasets
   dataset_id = each.key

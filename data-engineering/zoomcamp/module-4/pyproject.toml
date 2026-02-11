@@ -8,5 +8,6 @@ dependencies = [
     "fastparquet>=2024.11.0",
     "google-cloud-bigquery>=3.40.0",
     "google-cloud-storage>=3.9.0",
+    "polars>=1.38.1",
     "pyarrow>=23.0.0",
 ]

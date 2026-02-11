@@ -50,7 +50,7 @@ Run `dbt build` to create staging, intermediate, and fact models in BigQuery.
 ### Question 3
 **What is the count of records in the `fct_monthly_zone_revenue` model?**
 
-**Answer: 12,998**
+**Answer: 12,184**
 
 ```sql
 SELECT COUNT(*)
@@ -62,7 +62,7 @@ FROM `elt-demo-de`.`dbt_prod`.`fct_monthly_zone_revenue`;
 ### Question 4
 **Using the `fct_monthly_zone_revenue` table, find the pickup zone with the highest total revenue (`revenue_monthly_total_amount`) for Green taxi trips in 2020. Which zone had the highest revenue?**
 
-**Answer: East Harlem North with 2,034,520.86**
+**Answer: East Harlem North**
 
 ```sql
 SELECT
@@ -81,7 +81,7 @@ LIMIT 1;
 ### Question 5
 **Using the `fct_monthly_zone_revenue` table, what is the total number of trips (`total_monthly_trips`) for Green taxis in October 2019?**
 
-**Answer: 421,509**
+**Answer: 384,624**
 
 ```sql
 SELECT

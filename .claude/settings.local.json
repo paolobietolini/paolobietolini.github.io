@@ -4,7 +4,9 @@
       "Bash(tree:*)",
       "Bash(grep:*)",
       "Bash(uv run:*)",
-      "Bash(uv pip install:*)"
+      "Bash(uv pip install:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:learn.getdbt.com)"
     ]
   }
 }

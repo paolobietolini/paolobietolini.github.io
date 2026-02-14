@@ -10,9 +10,7 @@ Personal notes and resources for learning Data Engineering.
 
 ## SQL
 
-- [Lesson 1: SQL Basics](sql/basics/lesson-1)
-- [Lesson 2: Advanced Queries (WIP)](sql/advanced/lesson-2)
-- [SQL Quick Reference](sql/reference)
+- [SQL Reference for Data Engineering](sql/reference)
 
 ## Data Engineering Zoomcamp
 

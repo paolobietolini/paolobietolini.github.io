@@ -3,6 +3,7 @@ layout: default
 title: "SQL Reference for Data Engineering"
 permalink: /data-engineering/sql/reference
 ---
+{% raw %}
 
 ## Table of Contents
 
@@ -892,3 +893,4 @@ SELECT user_id, metric_name, metric_value
 FROM user_metrics
 UNPIVOT (metric_value FOR metric_name IN (page_views, add_to_carts, purchases))
 ```
+{% endraw %}

@@ -3,6 +3,7 @@ layout: default
 title: "Analytics Engineering & dbt"
 permalink: /data-engineering/zoomcamp/analytics-engineering
 ---
+{% raw %}
 
 ## Table of Contents
 
@@ -674,3 +675,4 @@ SELECT * FROM with_percentiles
 - [Kimball Group - Dimensional Modelling Techniques](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/)
 - [Course GitHub - Module 4](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/04-analytics-engineering)
 - [SQL Refresher - Window Functions & CTEs](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/04-analytics-engineering/refreshers/SQL.md)
+{% endraw %}

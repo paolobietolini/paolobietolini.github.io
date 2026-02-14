@@ -20,11 +20,10 @@ Notes from the [DataTalksClub Data Engineering Zoomcamp](https://github.com/Data
 
 - [Docker, Postgres & Terraform](zoomcamp/module-1/docker-postgres-terraform)
 - [Workflow Orchestration with Kestra](zoomcamp/workflow-orchestration-kestra)
-
-## GCP
-
-- [Data Engineer Certification Guide](gcp/certification)
+- [Data Warehouse & BigQuery](zoomcamp/data-warehouse)
+- [Analytics Engineering & dbt](zoomcamp/analytics-engineering)
 
 ## Career
 
 - [Data Engineering Transition Plan](career/transition-plan)
+- [Certification Guide](career/certification-guide)

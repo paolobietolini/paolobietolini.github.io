@@ -89,4 +89,4 @@ logs/
 
 
 CLAUDE.md
-.claude/
+*.claude/

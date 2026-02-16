@@ -20,6 +20,7 @@ Notes from the [DataTalksClub Data Engineering Zoomcamp](https://github.com/Data
 - [Workflow Orchestration with Kestra](zoomcamp/workflow-orchestration-kestra)
 - [Data Warehouse & BigQuery](zoomcamp/data-warehouse)
 - [Analytics Engineering & dbt](zoomcamp/analytics-engineering)
+- [Data Platforms with Bruin](zoomcamp/data-platforms)
 
 ## Career
 

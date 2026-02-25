@@ -1,11 +1,8 @@
-Ecco una versione **riorganizzata, corretta e arricchita** dei tuoi appunti sui puntatori in C, con particolare attenzione alla parte sulle stringhe e agli esempi pratici. Ho strutturato tutto in modo da essere chiaro, progressivo e pronto per lo studio o la consultazione rapida.
-
----
-
 # **Puntatori in C: Guida Completa**
 
 ## **1. Cos’è un puntatore?**
-Un **puntatore** è una variabile che **non contiene un valore**, ma **l’indirizzo di memoria di un’altra variabile**.
+Un **puntatore** è una variabile che **non contiene un valore**, 
+ma **l’indirizzo di memoria di un’altra variabile**.
 - Ogni variabile occupa una zona di memoria; il tipo ne determina dimensione e interpretazione.
 - Solo i puntatori contengono indirizzi di memoria.
 
@@ -153,9 +150,9 @@ int main() {
 }
 ```
 
-> ¹ In C, quando passi una struttura a una funzione per valore, viene creata una copia della struttura, il che può essere inefficienti per strutture grandi. Per evitare questo, puoi passare un puntatore alla struttura.
-
----
+> ¹ In C, quando passi una struttura a una funzione per valore, viene creata una 
+copia della struttura, il che può essere inefficiente per strutture grandi. 
+Per evitare questo, puoi passare un puntatore alla struttura.
 
 
 

@@ -1,0 +1,20 @@
+--- DO NOT DELETE
+# Staging (Bronze)
+# - Clean column names, cast types, filter test data
+# - stg_events.sql — clean up GA4 events (cast event_date to DATE,
+#   extract key event params, rename columns)
+# - stg_orders.sql — straightforward select from backend orders
+# - stg_users.sql — straightforward select from backend users
+# - stg_order_items.sql — clean types, surrogate key, null bad transaction_ids
+
+# Intermediate (Silver)
+# - int_orders_enriched — join stg_orders + stg_users + stg_order_items
+#   (complete order view with user info and item details per order)
+# - int_ga4_sessions — sessionize GA4 events (group by user_pseudo_id + session window),
+#   extract key event params (page_location, campaign)
+# - int_user_mapping — map user_pseudo_id (frontend) to user_id (backend)
+
+# Marts (Gold)
+# - fct_user_journeys — full funnel: first visit → engagement → purchase
+# - fct_reconciliation — GA4 transactions vs backend orders (match rate, revenue delta)
+# - dim_users — unified user profile

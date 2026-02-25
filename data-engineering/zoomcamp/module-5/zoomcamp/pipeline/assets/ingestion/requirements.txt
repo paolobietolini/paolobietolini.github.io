@@ -1,0 +1,16 @@
+numpy==1.26.4
+    # via
+    #   pandas
+    #   pyarrow
+pandas==2.2.0
+    # via -r data-engineering/zoomcamp/module-5/zoomcamp/pipeline/assets/ingestion/requirements.txt
+pyarrow==15.0.0
+    # via -r data-engineering/zoomcamp/module-5/zoomcamp/pipeline/assets/ingestion/requirements.txt
+python-dateutil==2.9.0.post0
+    # via pandas
+pytz==2025.2
+    # via pandas
+six==1.17.0
+    # via python-dateutil
+tzdata==2025.3
+    # via pandas

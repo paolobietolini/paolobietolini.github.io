@@ -3,6 +3,13 @@
 /.vscode/
 *secrets/
 *.json
+
+# C compiled binaries
+c/**/src/circular
+c/**/src/libri
+c/**/src/remove_emoji
+c/**/src/rubrica
+c/kr-exercises/**/syntax_checker
 *.pem
 
 # Data files
@@ -71,3 +78,22 @@ data-engineering/zoomcamp/module-2/kestra/.python-version
 data-engineering/zoomcamp/module-2/kestra/requirements.txt
 data-engineering/zoomcamp/module-2/kestra/pyproject.toml
 data-engineering/zoomcamp/module-2/kestra/uv.lock
+
+# Default .gitignore content added by dbt Cloud# you shouldn't commit these into source control
+# these are the default directory names, adjust/add to fit your needs
+target/
+dbt_packages/
+logs/
+# end dbt Cloud content
+
+
+
+CLAUDE.md
+*.claude/
+.bruin.yml
+logs/runs
+logs/*.log
+*.py[cod]
+logs/queries
+
+**/*.db

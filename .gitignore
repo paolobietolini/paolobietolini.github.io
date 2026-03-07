@@ -15,6 +15,7 @@ c/kr-exercises/**/syntax_checker
 # Data files
 *.csv
 *.parquet
+*.crc
 
 # Python
 __pycache__/
@@ -97,3 +98,15 @@ logs/*.log
 logs/queries
 
 **/*.db
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Python virtual environments
+.venv/
+
+# Python version files
+.python-version
+
+# Spark repartitioned output
+*_repartitioned/

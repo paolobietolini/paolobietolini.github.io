@@ -110,3 +110,6 @@ logs/queries
 
 # Spark repartitioned output
 *_repartitioned/
+
+# Claude settings
+.claude/

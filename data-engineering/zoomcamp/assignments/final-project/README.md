@@ -7,15 +7,17 @@ An e-commerce store (Google Merchandise Store) tracks purchases through two inde
 - **GA4 (Google Analytics 4)** — client-side analytics tracking purchase events
 - **Internal order database** — server-side record of completed orders
 
-These systems inevitably diverge. This pipeline reconciles both sources daily and surfaces discrepancies:
+These systems inevitably diverge. Without reconciliation, the business has no visibility into how much revenue is being lost to tracking gaps or how reliable its analytics data actually is. Marketing teams make budget decisions based on GA4 attribution data — if 10-15% of conversions are never tracked, those campaigns appear to underperform and get underfunded.
 
-| Discrepancy | Meaning |
-|---|---|
-| **Ghost order** | GA4 recorded a purchase but no matching order exists in the DB (JS error, payment failed after tracking) |
-| **Missing in GA4** | Order exists in the DB but GA4 never recorded it (ad blocker, consent denial, tag misconfiguration) |
-| **Revenue mismatch** | Both systems have the order but amounts differ (post-purchase adjustments, currency rounding) |
+This pipeline reconciles both sources daily and surfaces discrepancies:
 
-The pipeline produces a daily reconciliation fact table and a dashboard showing match rates and revenue gaps over time.
+| Discrepancy | Meaning | Business Impact |
+|---|---|---|
+| **Ghost order** | GA4 recorded a purchase but no matching order exists in the DB (JS error, payment failed after tracking) | Inflates reported revenue, distorts conversion metrics |
+| **Missing in GA4** | Order exists in the DB but GA4 never recorded it (ad blocker, consent denial, tag misconfiguration) | Under-reports campaign performance, leads to misallocated ad spend |
+| **Revenue mismatch** | Both systems have the order but amounts differ (post-purchase adjustments, currency rounding) | Creates discrepancies between finance and marketing reporting |
+
+The pipeline produces a daily reconciliation fact table and a dashboard showing match rates and revenue gaps over time, enabling data and marketing teams to quantify tracking quality and prioritize fixes.
 
 ## Architecture
 
@@ -54,7 +56,7 @@ The pipeline produces a daily reconciliation fact table and a dashboard showing 
 │  - Discrepancy breakdown             │
 └──────────────────────────────────────┘
 
-Orchestration: Apache Airflow (Docker Compose)
+Orchestration: Apache Airflow (Docker Compose) or make run-local
 IaC: Terraform
 ```
 
@@ -86,36 +88,63 @@ IaC: Terraform
 ## Prerequisites
 
 - GCP account with billing enabled
-- [Terraform](https://developer.hashicorp.com/terraform/install) installed
-- [Docker](https://docs.docker.com/get-docker/) and Docker Compose
+- GCP service account with **BigQuery Admin** and **Storage Admin** roles
+- [Terraform](https://developer.hashicorp.com/terraform/install) >= 1.0
 - Python 3.11+
-- GCP service account key with BigQuery Admin + Storage Admin roles
+- Java 11+ (for PySpark)
+- (Optional) [Docker](https://docs.docker.com/get-docker/) — only needed if running via Airflow
+
+> **Tip**: [GCP Cloud Shell](https://shell.cloud.google.com) has all of the above pre-installed except dbt/pyspark, which `make setup` handles.
 
 ## How to Run
 
-### 1. Provision infrastructure
+### 0. Clone the repository
 
 ```bash
-# Set your GCP project and credentials in terraform/variables.tf, then:
+git clone --filter=blob:none --sparse https://github.com/paolobietolini/paolobietolini.github.io.git
+cd paolobietolini.github.io
+git sparse-checkout set data-engineering/zoomcamp/assignments/final-project
+cd data-engineering/zoomcamp/assignments/final-project
+```
+
+### 1. Configure credentials
+
+```bash
+# Set the path to your GCP service account key
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account-key.json
+
+# Copy and edit Terraform variables
+cp terraform/terraform.tfvars.example terraform/terraform.tfvars
+# Edit terraform.tfvars with your project ID and credentials path
+
+# Copy and edit dbt profile
+cp dbt/profiles.yml.example dbt/profiles.yml
+# Edit dbt/profiles.yml with your keyfile path if different
+```
+
+### 2. Install dependencies
+
+```bash
+make setup
+```
+
+### 3. Provision infrastructure
+
+```bash
 make infra
 ```
 
-### 2. Start Airflow
+Verify: `terraform -chdir=terraform output` should show your bucket name and dataset ID.
+
+### 4. Run the full pipeline
+
+**Option A — Without Docker (recommended for Cloud Shell):**
 
 ```bash
-make airflow-up
-# Airflow UI available at http://localhost:8080 (admin / admin)
+make run-local
 ```
 
-### 3. Trigger the pipeline
-
-Either via the Airflow UI or:
-
-```bash
-make run-all
-```
-
-This runs the full DAG:
+This runs all steps sequentially:
 1. Generate fake orders from GA4 data
 2. Upload raw parquet to GCS
 3. Spark: clean and standardize both sources
@@ -123,15 +152,42 @@ This runs the full DAG:
 5. dbt: build staging views and fact tables
 6. dbt: run tests
 
-### 4. View the dashboard
+**Option B — With Airflow (requires Docker):**
+
+```bash
+make airflow-up
+# Airflow UI: http://localhost:8080 (admin / admin)
+make run-all
+```
+
+### 5. View the dashboard
 
 Open the Looker Studio dashboard (link + screenshots below).
 
-### 5. Tear down
+### 6. Tear down
 
 ```bash
+# If using Airflow:
 make airflow-down
+
+# Destroy GCP resources
 make destroy
+```
+
+### Available Makefile targets
+
+```
+make help          # Show all targets
+make setup         # Install Python dependencies
+make infra         # Provision GCP resources with Terraform
+make generate      # Generate fake order data
+make upload        # Upload parquet files to GCS
+make spark-clean   # Run Spark cleaning jobs
+make create-tables # Create BigQuery external tables
+make dbt-run       # Run dbt models
+make dbt-test      # Run dbt tests
+make run-local     # Run full pipeline (no Docker)
+make destroy       # Tear down GCP resources
 ```
 
 ## Dashboard
@@ -141,7 +197,6 @@ make destroy
 ## What I'd Improve With More Time
 
 - Parameterize date range for incremental processing
-- Add CI with GitHub Actions (lint + dbt compile)
 - Deploy Spark jobs to Dataproc instead of local execution
 - Add data quality checks with Great Expectations
 - Set up alerting on reconciliation anomalies

@@ -7,6 +7,7 @@ setup:           ## Install Python dependencies
 	pip install -r data-generator/requirements.txt
 	pip install -r dbt/requirements.txt
 	pip install pyspark==3.5.*
+	cd dbt && dbt deps
 
 infra:           ## Provision GCP resources with Terraform
 	cd terraform && terraform init && terraform apply -auto-approve

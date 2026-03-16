@@ -18,6 +18,12 @@ models:
         tests:
           - unique
           - not_null
+      - name: order_date
+        tests:
+          - not_null
+      - name: order_revenue
+        tests:
+          - not_null
 
   - name: stg_ga4_purchases
     description: "Staged GA4 purchase events"
@@ -25,4 +31,10 @@ models:
       - name: transaction_id
         tests:
           - unique
+          - not_null
+      - name: purchase_date
+        tests:
+          - not_null
+      - name: ga4_revenue
+        tests:
           - not_null

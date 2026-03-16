@@ -9,3 +9,10 @@ order_reconciliation:
       location: US
       keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS', '~/.secrets/zmcp-final-5928b2c488d2.json') }}"
       threads: 4
+    ci:
+      type: bigquery
+      method: oauth
+      project: zmcp-final
+      dataset: reconciliation
+      location: US
+      threads: 1

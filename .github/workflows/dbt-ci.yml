@@ -1,0 +1,39 @@
+name: dbt CI
+
+on:
+  pull_request:
+    paths:
+      - 'data-engineering/zoomcamp/assignments/final-project/dbt/**'
+  push:
+    branches: [main]
+    paths:
+      - 'data-engineering/zoomcamp/assignments/final-project/dbt/**'
+
+jobs:
+  dbt-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: data-engineering/zoomcamp/assignments/final-project/dbt
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install dbt-core dbt-bigquery sqlfluff sqlfluff-templater-dbt
+
+      - name: Install dbt packages
+        run: dbt deps
+
+      - name: Compile dbt models
+        run: dbt compile --profiles-dir . --target ci
+        env:
+          DBT_PROFILES_DIR: .
+
+      - name: Lint SQL with sqlfluff
+        run: sqlfluff lint models/ --dialect bigquery || true

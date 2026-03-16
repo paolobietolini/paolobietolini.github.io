@@ -4,6 +4,8 @@ standardize columns, filter to completed orders,
 write cleaned parquet back to GCS.
 """
 
+import os
+
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import DateType, DecimalType
@@ -12,13 +14,23 @@ BUCKET = "zmcp-final-reconciliation-datalake"
 INPUT_PATH = f"gs://{BUCKET}/raw/orders/"
 OUTPUT_PATH = f"gs://{BUCKET}/cleaned/orders/"
 
+GCS_CONNECTOR_JAR = "https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-latest.jar"
+
 
 def main():
-    spark = (
+    builder = (
         SparkSession.builder
         .appName("clean_orders")
-        .getOrCreate()
+        .master("local[*]")
+        .config("spark.jars", GCS_CONNECTOR_JAR)
+        .config("spark.hadoop.fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
     )
+
+    keyfile = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
+    if keyfile:
+        builder = builder.config("spark.hadoop.google.cloud.auth.service.account.json.keyfile", keyfile)
+
+    spark = builder.getOrCreate()
 
     df = spark.read.parquet(INPUT_PATH)
 

@@ -19,14 +19,8 @@ upload:          ## Upload generated parquet files to GCS
 	cd data-generator && python upload_to_gcs.py
 
 spark-clean:     ## Run Spark cleaning jobs locally
-	spark-submit --master "local[*]" \
-		--jars https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-latest.jar \
-		--conf spark.hadoop.google.cloud.auth.service.account.json.keyfile=$(GOOGLE_APPLICATION_CREDENTIALS) \
-		spark/clean_orders.py
-	spark-submit --master "local[*]" \
-		--jars https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-hadoop3-latest.jar \
-		--conf spark.hadoop.google.cloud.auth.service.account.json.keyfile=$(GOOGLE_APPLICATION_CREDENTIALS) \
-		spark/extract_ga4_purchases.py
+	python spark/clean_orders.py
+	python spark/extract_ga4_purchases.py
 
 create-tables:   ## Create BigQuery external tables
 	bq query --use_legacy_sql=false --project_id=zmcp-final \

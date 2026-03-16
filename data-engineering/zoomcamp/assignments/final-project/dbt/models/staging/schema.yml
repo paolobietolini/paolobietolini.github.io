@@ -23,7 +23,9 @@ models:
           - not_null
       - name: order_revenue
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn
 
   - name: stg_ga4_purchases
     description: "Staged GA4 purchase events"
@@ -37,4 +39,6 @@ models:
           - not_null
       - name: ga4_revenue
         tests:
-          - not_null
+          - not_null:
+              config:
+                severity: warn

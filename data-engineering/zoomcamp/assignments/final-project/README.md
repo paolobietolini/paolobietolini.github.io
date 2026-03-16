@@ -107,20 +107,22 @@ git sparse-checkout set data-engineering/zoomcamp/assignments/final-project
 cd data-engineering/zoomcamp/assignments/final-project
 ```
 
-### 1. Configure credentials
+### 1. Configure your environment
 
 ```bash
-# Set the path to your GCP service account key
-export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account-key.json
+# Copy the example .env and fill in your GCP project details
+cp .env.example .env
+# Edit .env with your values:
+#   GCP_PROJECT=your-gcp-project-id
+#   GCS_BUCKET=your-gcp-project-id-reconciliation-datalake
+#   BQ_DATASET=reconciliation
+#   GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account-key.json
 
-# Copy and edit Terraform variables
-cp terraform/terraform.tfvars.example terraform/terraform.tfvars
-# Edit terraform.tfvars with your project ID and credentials path
-
-# Copy and edit dbt profile
+# Copy the dbt profile (it reads from the same env vars)
 cp dbt/profiles.yml.example dbt/profiles.yml
-# Edit dbt/profiles.yml with your keyfile path if different
 ```
+
+All scripts and the Makefile read from `.env` automatically — this is the only file you need to edit.
 
 ### 2. Install dependencies
 

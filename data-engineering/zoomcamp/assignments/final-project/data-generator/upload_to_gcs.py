@@ -2,11 +2,12 @@
 Uploads locally generated parquet files to the GCS data lake bucket.
 """
 
+import os
 from pathlib import Path
 
 from google.cloud import storage
 
-BUCKET_NAME = "zmcp-final-reconciliation-datalake"
+BUCKET_NAME = os.environ.get("GCS_BUCKET", "zmcp-final-reconciliation-datalake")
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 UPLOADS = {

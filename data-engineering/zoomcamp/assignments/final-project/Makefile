@@ -1,3 +1,6 @@
+include .env
+export
+
 .PHONY: setup infra generate upload spark-clean create-tables dbt-run dbt-test run-local airflow-up airflow-down run-all destroy help
 
 help:            ## Show this help
@@ -10,7 +13,12 @@ setup:           ## Install Python dependencies
 	cd dbt && dbt deps
 
 infra:           ## Provision GCP resources with Terraform
-	cd terraform && terraform init && terraform apply -auto-approve
+	cd terraform && terraform init && terraform apply \
+		-var="project=$(GCP_PROJECT)" \
+		-var="gcs_bucket_name=$(GCS_BUCKET)" \
+		-var="bq_dataset_name=$(BQ_DATASET)" \
+		-var="credentials=$(GOOGLE_APPLICATION_CREDENTIALS)" \
+		-auto-approve
 
 generate:        ## Generate fake order data locally
 	cd data-generator && python generate_orders.py
@@ -23,10 +31,10 @@ spark-clean:     ## Run Spark cleaning jobs locally
 	python spark/extract_ga4_purchases.py
 
 create-tables:   ## Create BigQuery external tables
-	bq query --use_legacy_sql=false --project_id=zmcp-final \
-		'CREATE OR REPLACE EXTERNAL TABLE `zmcp-final.reconciliation.ext_orders` OPTIONS (format = "PARQUET", uris = ["gs://zmcp-final-reconciliation-datalake/cleaned/orders/*.parquet"]);'
-	bq query --use_legacy_sql=false --project_id=zmcp-final \
-		'CREATE OR REPLACE EXTERNAL TABLE `zmcp-final.reconciliation.ext_ga4_purchases` OPTIONS (format = "PARQUET", uris = ["gs://zmcp-final-reconciliation-datalake/cleaned/ga4_purchases/*.parquet"]);'
+	bq query --use_legacy_sql=false --project_id=$(GCP_PROJECT) \
+		'CREATE OR REPLACE EXTERNAL TABLE `$(GCP_PROJECT).$(BQ_DATASET).ext_orders` OPTIONS (format = "PARQUET", uris = ["gs://$(GCS_BUCKET)/cleaned/orders/*.parquet"]);'
+	bq query --use_legacy_sql=false --project_id=$(GCP_PROJECT) \
+		'CREATE OR REPLACE EXTERNAL TABLE `$(GCP_PROJECT).$(BQ_DATASET).ext_ga4_purchases` OPTIONS (format = "PARQUET", uris = ["gs://$(GCS_BUCKET)/cleaned/ga4_purchases/*.parquet"]);'
 
 dbt-run:         ## Run dbt models
 	cd dbt && dbt run --profiles-dir .
@@ -54,4 +62,9 @@ run-all:         ## Trigger the full reconciliation DAG via Airflow
 		airflow dags trigger reconciliation_dag
 
 destroy:         ## Tear down all GCP resources
-	cd terraform && terraform destroy -auto-approve
+	cd terraform && terraform destroy \
+		-var="project=$(GCP_PROJECT)" \
+		-var="gcs_bucket_name=$(GCS_BUCKET)" \
+		-var="bq_dataset_name=$(BQ_DATASET)" \
+		-var="credentials=$(GOOGLE_APPLICATION_CREDENTIALS)" \
+		-auto-approve

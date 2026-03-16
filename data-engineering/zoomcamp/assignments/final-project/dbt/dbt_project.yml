@@ -3,6 +3,9 @@ version: "1.0.0"
 
 profile: order_reconciliation
 
+vars:
+  gcp_project: "{{ env_var('GCP_PROJECT', 'zmcp-final') }}"
+
 models:
   order_reconciliation:
     staging:

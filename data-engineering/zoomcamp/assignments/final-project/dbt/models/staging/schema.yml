@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: reconciliation
-    database: zmcp-final
+    database: "{{ var('gcp_project') }}"
     schema: reconciliation
     tables:
       - name: ext_orders

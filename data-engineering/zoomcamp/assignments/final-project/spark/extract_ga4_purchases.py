@@ -9,7 +9,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import DateType, DecimalType
 
-BUCKET = "zmcp-final-reconciliation-datalake"
+BUCKET = os.environ.get("GCS_BUCKET", "zmcp-final-reconciliation-datalake")
 INPUT_PATH = f"gs://{BUCKET}/raw/ga4_purchases/"
 OUTPUT_PATH = f"gs://{BUCKET}/cleaned/ga4_purchases/"
 

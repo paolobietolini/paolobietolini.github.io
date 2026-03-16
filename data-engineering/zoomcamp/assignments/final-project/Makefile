@@ -1,4 +1,4 @@
-include .env
+-include .env
 export
 
 .PHONY: setup infra generate upload spark-clean create-tables dbt-run dbt-test run-local airflow-up airflow-down run-all destroy help

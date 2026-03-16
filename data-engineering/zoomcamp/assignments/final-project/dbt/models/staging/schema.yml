@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: reconciliation
+    database: zmcp-final
+    schema: reconciliation
+    tables:
+      - name: ext_orders
+        description: "External table over cleaned orders parquet in GCS"
+      - name: ext_ga4_purchases
+        description: "External table over cleaned GA4 purchase parquet in GCS"
+
+models:
+  - name: stg_orders
+    description: "Staged orders from the internal database"
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_ga4_purchases
+    description: "Staged GA4 purchase events"
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null

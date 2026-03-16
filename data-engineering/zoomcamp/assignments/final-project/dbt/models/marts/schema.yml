@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: fct_reconciliation
+    description: >
+      Full outer join of orders and GA4 purchases, with reconciliation
+      status (matched, revenue_mismatch, missing_in_ga4, ghost_order).
+      Partitioned by report_date, clustered by reconciliation_status.
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
+      - name: reconciliation_status
+        tests:
+          - accepted_values:
+              values: ['matched', 'revenue_mismatch', 'missing_in_ga4', 'ghost_order']
+
+  - name: metrics_daily_summary
+    description: "Daily aggregation of reconciliation outcomes for dashboarding"

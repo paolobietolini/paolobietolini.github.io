@@ -1,0 +1,11 @@
+order_reconciliation:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: zmcp-final
+      dataset: reconciliation
+      location: US
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS', '~/.secrets/zmcp-final-5928b2c488d2.json') }}"
+      threads: 4

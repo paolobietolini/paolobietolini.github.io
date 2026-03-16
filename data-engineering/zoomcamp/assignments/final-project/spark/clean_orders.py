@@ -24,6 +24,9 @@ def main():
         .master("local[*]")
         .config("spark.jars", GCS_CONNECTOR_JAR)
         .config("spark.hadoop.fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
+        .config("spark.sql.parquet.int96RebaseModeInRead", "CORRECTED")
+        .config("spark.sql.parquet.datetimeRebaseModeInRead", "CORRECTED")
+        .config("spark.sql.parquet.outputTimestampType", "TIMESTAMP_MICROS")
     )
 
     keyfile = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")

@@ -113,8 +113,8 @@ def main():
     orders_path = OUTPUT_DIR / "orders.parquet"
     ga4_path = OUTPUT_DIR / "ga4_purchases.parquet"
 
-    orders_df.to_parquet(orders_path, index=False)
-    ga4_purchases_df.to_parquet(ga4_path, index=False)
+    orders_df.to_parquet(orders_path, index=False, coerce_timestamps="us", allow_truncated_timestamps=True)
+    ga4_purchases_df.to_parquet(ga4_path, index=False, coerce_timestamps="us", allow_truncated_timestamps=True)
 
     print(f"\nSaved:")
     print(f"  {orders_path}  ({len(orders_df)} rows)")

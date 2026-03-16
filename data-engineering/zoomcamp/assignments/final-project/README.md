@@ -76,7 +76,7 @@ IaC: Terraform
 
 ## Data Sources
 
-**GA4 Public Dataset** — `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*` (Nov 2020 – Jan 2021). Purchase events with `transaction_id`, `purchase_revenue`, and item details.
+**GA4 Public Dataset** — `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*` (Nov 2020 - Jan 2021). Purchase events with `transaction_id`, `purchase_revenue`, and item details.
 
 **Fake Orders** — generated Python script that creates orders with controlled discrepancies: ~80% matched, ~5% revenue mismatch, ~5% ghost (GA4-only), ~10% DB-only.
 
@@ -94,17 +94,15 @@ IaC: Terraform
 - Java 11+ (for PySpark)
 - (Optional) [Docker](https://docs.docker.com/get-docker/) — only needed if running via Airflow
 
-> **Tip**: [GCP Cloud Shell](https://shell.cloud.google.com) has all of the above pre-installed except dbt/pyspark, which `make setup` handles.
+> **Tip**: [GCP Cloud Shell](https://shell.cloud.google.com) has Terraform, Python, Java, and `bq` CLI pre-installed. Only dbt and pyspark need installing, which `make setup` handles.
 
 ## How to Run
 
 ### 0. Clone the repository
 
 ```bash
-git clone --filter=blob:none --sparse https://github.com/paolobietolini/paolobietolini.github.io.git
-cd paolobietolini.github.io
-git sparse-checkout set data-engineering/zoomcamp/assignments/final-project
-cd data-engineering/zoomcamp/assignments/final-project
+git clone https://github.com/paolobietolini/zoomcamp-final-ga4-orders-reconciliation.git
+cd zoomcamp-final-ga4-orders-reconciliation
 ```
 
 ### 1. Configure your environment
@@ -112,23 +110,32 @@ cd data-engineering/zoomcamp/assignments/final-project
 ```bash
 # Copy the example .env and fill in your GCP project details
 cp .env.example .env
-# Edit .env with your values:
-#   GCP_PROJECT=your-gcp-project-id
-#   GCS_BUCKET=your-gcp-project-id-reconciliation-datalake
-#   BQ_DATASET=reconciliation
-#   GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account-key.json
+```
 
-# Copy the dbt profile (it reads from the same env vars)
+Edit `.env` with your values:
+
+```
+GCP_PROJECT=your-gcp-project-id
+GCS_BUCKET=your-gcp-project-id-reconciliation-datalake
+BQ_DATASET=reconciliation
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/service-account-key.json
+```
+
+Then copy the dbt profile (it reads from the same env vars automatically):
+
+```bash
 cp dbt/profiles.yml.example dbt/profiles.yml
 ```
 
-All scripts and the Makefile read from `.env` automatically — this is the only file you need to edit.
+**`.env` is the only file you need to edit.** All scripts, Terraform, and dbt read from it.
 
 ### 2. Install dependencies
 
 ```bash
 make setup
 ```
+
+This installs Python packages (faker, pandas, pyspark, dbt-core, dbt-bigquery) and dbt packages.
 
 ### 3. Provision infrastructure
 
@@ -140,7 +147,7 @@ Verify: `terraform -chdir=terraform output` should show your bucket name and dat
 
 ### 4. Run the full pipeline
 
-**Option A — Without Docker (recommended for Cloud Shell):**
+**Option A - Without Docker (recommended for Cloud Shell):**
 
 ```bash
 make run-local
@@ -154,7 +161,7 @@ This runs all steps sequentially:
 5. dbt: build staging views and fact tables
 6. dbt: run tests
 
-**Option B — With Airflow (requires Docker):**
+**Option B - With Airflow (requires Docker):**
 
 ```bash
 make airflow-up

@@ -1,10 +1,8 @@
 variable "credentials" {
-  default     = "~/.secrets/zmcp-final-5928b2c488d2.json"
   description = "Path to GCP service account key JSON"
 }
 
 variable "project" {
-  default     = "zmcp-final"
   description = "GCP Project ID"
 }
 
@@ -19,7 +17,6 @@ variable "location" {
 }
 
 variable "gcs_bucket_name" {
-  default     = "zmcp-final-reconciliation-datalake"
   description = "GCS bucket for raw and cleaned data"
 }
 

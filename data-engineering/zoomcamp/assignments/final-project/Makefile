@@ -1,6 +1,8 @@
 -include .env
 export
 
+PATH := $(HOME)/.local/bin:$(PATH)
+
 .PHONY: setup infra generate upload spark-clean create-tables dbt-run dbt-test run-local airflow-up airflow-down run-all destroy help
 
 help:            ## Show this help
@@ -10,7 +12,7 @@ setup:           ## Install Python dependencies
 	pip install -r data-generator/requirements.txt
 	pip install -r dbt/requirements.txt
 	pip install pyspark==3.5.*
-	cd dbt && dbt deps
+	cd dbt && dbt deps --profiles-dir .
 
 infra:           ## Provision GCP resources with Terraform
 	cd terraform && terraform init && terraform apply \

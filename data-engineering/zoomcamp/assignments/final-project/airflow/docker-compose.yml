@@ -9,15 +9,15 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
     GOOGLE_APPLICATION_CREDENTIALS: /opt/gcp/key.json
-    GCS_BUCKET: zmcp-final-reconciliation-datalake
-    GCP_PROJECT: zmcp-final
-    BQ_DATASET: reconciliation
+    GCS_BUCKET: ${GCS_BUCKET}
+    GCP_PROJECT: ${GCP_PROJECT}
+    BQ_DATASET: ${BQ_DATASET:-reconciliation}
   volumes:
     - ./dags:/opt/airflow/dags
     - ../data-generator:/opt/airflow/data-generator
     - ../spark:/opt/airflow/spark
     - ../dbt:/opt/airflow/dbt
-    - ${GOOGLE_APPLICATION_CREDENTIALS:-~/.secrets/zmcp-final-5928b2c488d2.json}:/opt/gcp/key.json:ro
+    - ${GOOGLE_APPLICATION_CREDENTIALS}:/opt/gcp/key.json:ro
     - airflow-logs:/opt/airflow/logs
 
 services:
